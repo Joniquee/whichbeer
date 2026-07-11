@@ -2,10 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 from app.data.scrape_untappd_descriptions import parse_beers_by_name
-from app.data.data import get_row, get_description
+#from app.data.data import get_row, get_description
+from app.data.postgres import get_row, get_description, get_connection
 from app.main.system import get_user_nondesc_vector, similarity_euclidean, probability, final_probability, get_similarities
 import pydantic
 #"brewery_name", "beer_name", "beer_style", "abv", "ibu", "description"
+from fastapi.staticfiles import StaticFiles
 
 class Beer(pydantic.BaseModel):
     brewery: str
@@ -30,6 +32,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
 
 @app.get("/api/search_beers")
 async def search_beers(beer_name: str):
