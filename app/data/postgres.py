@@ -3,10 +3,18 @@ import pandas as pd
 import os
 
 # Connection string (для Railway: переменная DATABASE_URL)
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL", default="postgresql://postgres:hOyPRiWxvaAWMCVuipaAUVlTiXGFLkpH@hayabusa.proxy.rlwy.net:35856/railway")
 
 def get_connection():
     return psycopg2.connect(DATABASE_URL)
+
+def ensure_embedding_column():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("ALTER TABLE beer ADD COLUMN IF NOT EXISTS embedding DOUBLE PRECISION[]")
+    conn.commit()
+    cursor.close()
+    conn.close()
 
 def pd_to_sql():
     conn = get_connection()
@@ -21,7 +29,8 @@ def pd_to_sql():
             beer_style TEXT,
             abv FLOAT,
             ibu FLOAT,
-            description TEXT
+            description TEXT,
+            embedding DOUBLE PRECISION[]
         )
     """)
     conn.commit()
@@ -99,6 +108,17 @@ def get_description(beer_name):
     cursor = conn.cursor()
 
     cursor.execute("SELECT description FROM beer WHERE beer_name = %s", (beer_name,))
+    row = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+    return row[0] if row else None
+
+def get_embedding(beer_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT embedding FROM beer WHERE beer_name = %s", (beer_name,))
     row = cursor.fetchone()
 
     cursor.close()
