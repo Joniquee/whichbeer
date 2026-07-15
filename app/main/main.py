@@ -53,7 +53,7 @@ async def add_beer(beer: Beer):
         "ibu": beer.ibu,
         "description": beer.description
     }
-    from app.data.data import add_beer, is_beer_in_db
+    from app.data.postgres import add_beer, is_beer_in_db
 
     if is_beer_in_db(beer_data["beer_name"]):
         return {"message": "Beer already exists"}

@@ -48,7 +48,7 @@ def get_user_nondesc_vector(*args) -> list:
 
     names = get_names()
     weights = get_weight_vector(*args)
-    user_df = pd.DataFrame(None, columns=['id', 'brewery_name', 'beer_name', 'beer_style', 'abv', 'ibu', 'description'])
+    user_df = pd.DataFrame(None, columns=['id', 'brewery_name', 'beer_name', 'beer_style', 'abv', 'ibu', 'description', 'embedding'])
 
     for i,name in enumerate(args):
         if name in names:
@@ -56,8 +56,8 @@ def get_user_nondesc_vector(*args) -> list:
             concat_df = pd.DataFrame([get_row(name)], columns=user_df.columns)
             #print(concat_df)
             user_df = pd.concat([user_df, concat_df], axis=0)
-    
-    user_df = user_df.drop(columns=['beer_name', 'brewery_name', 'id', 'beer_style', 'description'])
+
+    user_df = user_df.drop(columns=['beer_name', 'brewery_name', 'id', 'beer_style', 'description', 'embedding'])
     for col in user_df.columns:
         values = user_df[col].values
         weighted_mean = sum(v * w for v, w in zip(values, weights))
