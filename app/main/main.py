@@ -51,7 +51,8 @@ async def add_beer(beer: Beer):
         "beer_style": beer.style,
         "abv": beer.abv,
         "ibu": beer.ibu,
-        "description": beer.description
+        "description": beer.description,
+        "embedding": None  # Placeholder for embedding, to be computed later
     }
     from app.data.postgres import add_beer, is_beer_in_db
 
