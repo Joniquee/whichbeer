@@ -1,4 +1,4 @@
-from app.data.data import get_names, get_description
+from app.data.postgres import get_names, get_description
 import numpy as np
 import sentence_transformers
 

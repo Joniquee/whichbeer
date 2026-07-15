@@ -1,4 +1,4 @@
-from app.data.data import get_row, get_names
+from app.data.postgres import get_row, get_names
 from app.data.scrape_untappd_descriptions import parse_beer_by_name
 import numpy as np
 import pandas as pd
