@@ -4,14 +4,16 @@ import sentence_transformers
 
 # Loaded lazily on first use instead of at import time: this module is
 # imported by main.py, so eager-loading here would download/load the
-# ~1GB model before uvicorn even binds to the port, causing boot-time
+# model before uvicorn even binds to the port, causing boot-time
 # timeouts/OOM kills on memory-constrained hosts (e.g. Railway).
+# multilingual-e5-small (~470MB) instead of -base (~1.1GB) — the base
+# model alone was enough to OOM-kill the container on first use.
 _st = None
 
 def _get_model():
     global _st
     if _st is None:
-        _st = sentence_transformers.SentenceTransformer('intfloat/multilingual-e5-base')
+        _st = sentence_transformers.SentenceTransformer('intfloat/multilingual-e5-small')
     return _st
 
 def sigmoid(x):
