@@ -24,7 +24,7 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Write runtime config
-        run: echo "window.API_BASE = '${{ secrets.API_URL }}';" > frontend/config.js
+        run: echo "window.API_BASE = '${{ vars.API_URL }}';" > frontend/config.js
       
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
