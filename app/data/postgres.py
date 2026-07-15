@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # Connection string (для Railway: переменная DATABASE_URL)
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/beer_db")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_connection():
     return psycopg2.connect(DATABASE_URL)
