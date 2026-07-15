@@ -575,8 +575,11 @@
     <div class="probability-fill" id="probabilityFill"></div>
   </div>
 
+  <script src="config.js"></script>
   <script>
-    const API_BASE = "http://localhost:8000";
+    // window.API_BASE is set by config.js — that file is regenerated per
+    // environment at deploy time (see frontend/config.js for local default).
+    const API_BASE = window.API_BASE || "http://localhost:8000";
 
     const list = document.getElementById("beerList");
     const searchInput = document.querySelector(".search-bar input");

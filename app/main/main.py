@@ -33,8 +33,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
-
 @app.get("/api/search_beers")
 async def search_beers(beer_name: str):
     hits = parse_beers_by_name(session, beer_name)
@@ -73,3 +71,5 @@ async def get_probability(request: ProbabilityRequest):
     similarities_desc = get_similarities(*comparisons, drink_name=beer_name)
     final_prob = final_probability(similarities_nondesc, similarities_desc)
     return {"probability": float(final_prob)}
+
+app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
